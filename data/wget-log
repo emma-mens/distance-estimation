@@ -1,0 +1,6 @@
+--2021-10-14 19:18:38--  https://drivendata-prod.s3.amazonaws.com/data/82/public/video_download_instructions_09D0pnF.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256
+Resolving drivendata-prod.s3.amazonaws.com (drivendata-prod.s3.amazonaws.com)... 52.216.101.11
+Connecting to drivendata-prod.s3.amazonaws.com (drivendata-prod.s3.amazonaws.com)|52.216.101.11|:443... connected.
+HTTP request sent, awaiting response... 400 Bad Request
+2021-10-14 19:18:38 ERROR 400: Bad Request.
+

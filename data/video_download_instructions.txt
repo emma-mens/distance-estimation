@@ -1,0 +1,85 @@
+
+HOW TO DOWNLOAD THE DEPTH ESTIMATION COMPETITION VIDEOS
+
+-------------------------------------------------------
+
+Welcome to the Depth Estimation for Wildlife Conservation challenge! These instructions will help you access the video files for this competition.
+
+As detailed in the problem description, there are four folders of videos:
+
+	dataset                  | n      | size  	
+    -------------------------------------------
+	train videos             | 2,072  | 101GB 
+	downsampled train videos | 2,072  | 15GB  
+	test videos              | 1,836  | 81GB  
+	downsampled test videos  | 1,836  | 13GB  
+
+The video folders for the competition are hosted on a public AWS S3 bucket. They can be downloaded from the following links:
+
+    - train_videos: s3://drivendata-competition-depth-estimation-public/train_videos/
+    - train_videos_downsampled: s3://drivendata-competition-depth-estimation-public/train_videos_downsampled/
+    - test_videos: s3://drivendata-competition-depth-estimation-public/test_videos/
+    - test_videos_downsampled: s3://drivendata-competition-depth-estimation-public/test_videos_downsampled/
+
+
+## Regional buckets
+
+The bucket listed above is in the US East AWS Region. The same data is also hosted on AWS buckets in the EU (Frankfurt) and Asia (Singapore). To get the fastest download times, download from the bucket closest to you.
+
+To access buckets other than the default US East bucket, simply append "-asia" or "-eu" to the end of the bucket name. For the train videos, rather than "s3://drivendata-competition-depth-estimation-public/train_videos/", use one of the following:
+
+    s3://drivendata-competition-depth-estimation-public-eu/train_videos/
+    s3://drivendata-competition-depth-estimation-public-asia/train_videos/
+
+
+## AWS CLI
+
+The easiest way to download data from AWS is using the AWS CLI:
+
+    https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
+
+To download an individual video to your local machine, the general structure is
+
+    aws s3 cp <S3 URI> <local path> --no-sign-request
+
+For example:
+
+    aws s3 cp s3://drivendata-competition-depth-estimation-public/train_videos/aany.mp4 ./ --no-sign-request
+
+The above downloads the video `aany.mp4` from the public bucket in the US region. Adding "--no-sign-request" allows data to be downloaded without configuring an AWS profile.
+
+To download a directory rather than a file, use the `--recursive` flag. For example, to download all of the train videos:
+
+    aws s3 cp s3://drivendata-competition-depth-estimation-public/train_videos/ train_videos/ --no-sign-request --recursive
+
+To download only a subset of the videos, use the `--exclude` and `--include` flags. For example, to download only the videos ending in `.mp4`:
+
+    aws s3 cp s3://drivendata-competition-depth-estimation-public/train_videos/ train_videos/ --no-sign-request --recursive --exclude="*" --include="*.mp4"
+
+See the AWS CLI docs for more details on how to use filters and other flags:
+
+    https://docs.aws.amazon.com/cli/latest/reference/s3/#use-of-exclude-and-include-filters
+
+
+## Video access metadata
+
+We have also provided a "video_access_metadata.csv" file on the "Data Download" page that contains the s3 uris for each video. This may be useful if you want to write a script for downloading. The metadata file also includes video hashes that can be used to verify the integrity of a downloaded file. Hashes are generated using the default SHA-1 (secure hash algorithm 1) cryptographic hash function.
+
+The metadata csv contains the following columns:
+
+    - `video_id`: unique video identifier corresponding to the file name
+    - `s3_uri`: location of the full video in the US-based competition bucket
+    - `downsampled_s3_uri`: location of the downsampled video in the US-based competition bucket
+    - `sha1_checksum`: SHA-1 checksum of the full video
+    - `downsampled_sha1_checksum`: SHA-1 checksum of the downsampled video
+
+To check that your data was not corrupted during download, you can generate your own hashes at the command line and compare them to the metadata. For example, we know from the metadata that the hash for the full video "aaju.mp4" is d9ec6ca489a60d36cb8bb92e330b53d7959df3cc. To generate a SHA-1 hash of a locally saved version:
+
+	$ shasum test_videos/aaju.mp4
+	d9ec6ca489a60d36cb8bb92e330b53d7959df3cc test_videos/aaju.mp4
+
+##
+
+Good luck! If you have any questions you can always visit the user forum at:
+
+	https://community.drivendata.org/
